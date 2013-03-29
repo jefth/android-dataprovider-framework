@@ -2,7 +2,7 @@ package sg.ilovedeals.dataservice;
 
 import java.util.Random;
 
-import sg.ilovedeals.dataservice.logic.CategoryInvoker;
+import sg.ilovedeals.dataservice.logic.CategoryProvider;
 import sg.ilovedeals.dataservice.util.CursorUtility;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -41,11 +41,11 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				String where = CategoryInvoker.Table.CLUMN_ID+"=?";
+				String where = CategoryProvider.Table.CLUMN_ID+"=?";
 				String[] args = CursorUtility.toArgs(new Random().nextInt(50));
-				int rows = resolver.delete(CategoryInvoker.URI_ITEM, where, args);
+				int rows = resolver.delete(CategoryProvider.URI_ITEM, where, args);
 				if(rows > 0)
-				resolver.notifyChange(CategoryInvoker.URI_ITEM, null);
+				resolver.notifyChange(CategoryProvider.URI_ITEM, null);
 			}
 		});
 		
@@ -57,16 +57,16 @@ public class MainActivity extends Activity {
 				ContentValues[] values = new ContentValues[size];
 				for(int i=0;i<size;i++){
 					ContentValues value = new ContentValues();
-					value.put(CategoryInvoker.Table.CLUMN_EXTRA, "extra");
-					value.put(CategoryInvoker.Table.CLUMN_ICON, "icon");
-					value.put(CategoryInvoker.Table.CLUMN_NAME, "name-"+key);
-					value.put(CategoryInvoker.Table.CLUMN_PARENT, 0);
-					value.put(CategoryInvoker.Table.CLUMN_ID, key);
+					value.put(CategoryProvider.Table.CLUMN_EXTRA, "extra");
+					value.put(CategoryProvider.Table.CLUMN_ICON, "icon");
+					value.put(CategoryProvider.Table.CLUMN_NAME, "name-"+key);
+					value.put(CategoryProvider.Table.CLUMN_PARENT, 0);
+					value.put(CategoryProvider.Table.CLUMN_ID, key);
 					key++;
 					values[i] = value;
 				}
-				resolver.bulkInsert(CategoryInvoker.URI_GROUP, values);
-				resolver.notifyChange(CategoryInvoker.URI_GROUP, null);
+				resolver.bulkInsert(CategoryProvider.URI_GROUP, values);
+				resolver.notifyChange(CategoryProvider.URI_GROUP, null);
 			}
 		});
 		
@@ -74,11 +74,11 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				String where = CategoryInvoker.Table.CLUMN_PARENT+"=?";
+				String where = CategoryProvider.Table.CLUMN_PARENT+"=?";
 				String[] args = CursorUtility.toArgs(0);
-				int rows = resolver.delete(CategoryInvoker.URI_GROUP, where, args);
+				int rows = resolver.delete(CategoryProvider.URI_GROUP, where, args);
 				if(rows > 0){
-					resolver.notifyChange(CategoryInvoker.URI_GROUP, null);
+					resolver.notifyChange(CategoryProvider.URI_GROUP, null);
 				}
 			}
 		});
@@ -88,18 +88,18 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				ContentValues values = new ContentValues();
-				values.put(CategoryInvoker.Table.CLUMN_NAME, "### NAME = "+new Random().nextInt(100000));
-				String where = CategoryInvoker.Table.CLUMN_ID+"=?";
+				values.put(CategoryProvider.Table.CLUMN_NAME, "### NAME = "+new Random().nextInt(100000));
+				String where = CategoryProvider.Table.CLUMN_ID+"=?";
 				String[] args = CursorUtility.toArgs(new Random().nextInt(50));
-				int rows = resolver.update(CategoryInvoker.URI_ITEM, values,where, args);
+				int rows = resolver.update(CategoryProvider.URI_ITEM, values,where, args);
 				System.out.println(">>> 响应行数："+rows);
 				if(rows > 0)
-				resolver.notifyChange(CategoryInvoker.URI_ITEM, null);
+				resolver.notifyChange(CategoryProvider.URI_ITEM, null);
 			}
 		});
 		
-		resolver.registerContentObserver(CategoryInvoker.URI_GROUP, true, new MyContentObserver(new Handler()));
-		listCursor = resolver.query(CategoryInvoker.URI_GROUP, null, null, null, null);
+		resolver.registerContentObserver(CategoryProvider.URI_GROUP, true, new MyContentObserver(new Handler()));
+		listCursor = resolver.query(CategoryProvider.URI_GROUP, null, null, null, null);
 		MyCursorAdapter adapter = new MyCursorAdapter(this, listCursor);
 		listView.setAdapter(adapter);
 		listView.setFastScrollEnabled(true);
@@ -136,7 +136,7 @@ public class MainActivity extends Activity {
         @Override  
         public void bindView(View view, Context context, Cursor cursor) {  
             TextView noteTitle = (TextView) view;
-            String title = cursor.getString(cursor.getColumnIndex(CategoryInvoker.Table.CLUMN_NAME));
+            String title = cursor.getString(cursor.getColumnIndex(CategoryProvider.Table.CLUMN_NAME));
             noteTitle.setText(title);  
                           
           //super.bindView(view, context, cursor);   

@@ -10,27 +10,14 @@ import sg.ilovedeals.dataservice.util.UriUtility;
 import android.content.Context;
 import android.net.Uri;
 
-public class CategoryInvoker extends ActionInvoker {
+public class CategoryProvider extends ActionInvoker {
 	
 	@UriPath
 	static final String ACCESS_PREFIX = "categories";
 	
-	public CategoryInvoker(Context context) {
-		super(context);
-		SQLiteHelper.registerTableConfig(Table.class);
-	}
-	
-	public static final Uri URI_RECOGNITION;
-	public static final Uri URI_GROUP;
-	public static final Uri URI_ITEM;
-	
-	//构建访问URI
-	static{
-		URI_GROUP = UriUtility.makeAccessGroupUri(ACCESS_PREFIX);
-		URI_ITEM = UriUtility.makeAccessItemUri(ACCESS_PREFIX);
-		URI_RECOGNITION = URI_GROUP;
-	}
-	
+	/**
+	 * 数据表配置类
+	 */
 	public static class Table{
 		
 		@SQLiteTable
@@ -53,6 +40,22 @@ public class CategoryInvoker extends ActionInvoker {
 		
 		@SQLiteColumn(primitiveType=PrimitiveType.INT, defaultValue="0")
 		public static final String CLUMN_PARENT = "parent_id";
+	}
+	
+	public static final Uri URI_RECOGNITION;
+	public static final Uri URI_GROUP;
+	public static final Uri URI_ITEM;
+	
+	//构建访问URI
+	static{
+		URI_GROUP = UriUtility.makeAccessGroupUri(ACCESS_PREFIX);
+		URI_ITEM = UriUtility.makeAccessItemUri(ACCESS_PREFIX);
+		URI_RECOGNITION = URI_GROUP;
+	}
+	
+	public CategoryProvider(Context context) {
+		super(context);
+		SQLiteHelper.registerTableConfig(Table.class);
 	}
 	
 	@Override
