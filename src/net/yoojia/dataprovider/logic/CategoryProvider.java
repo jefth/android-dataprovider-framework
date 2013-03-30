@@ -1,12 +1,12 @@
-package sg.ilovedeals.dataservice.logic;
+package net.yoojia.dataprovider.logic;
 
-import sg.ilovedeals.dataservice.ActionInvoker;
-import sg.ilovedeals.dataservice.annotation.SQLiteTable;
-import sg.ilovedeals.dataservice.annotation.SQLiteTable.SQLiteColumn;
-import sg.ilovedeals.dataservice.annotation.SQLiteTable.SQLiteColumn.PrimitiveType;
-import sg.ilovedeals.dataservice.annotation.UriPath;
-import sg.ilovedeals.dataservice.util.SQLiteHelper;
-import sg.ilovedeals.dataservice.util.UriUtility;
+import net.yoojia.dataprovider.ActionInvoker;
+import net.yoojia.dataprovider.annotation.Table;
+import net.yoojia.dataprovider.annotation.UriPath;
+import net.yoojia.dataprovider.annotation.Table.Column;
+import net.yoojia.dataprovider.annotation.Table.Column.Type;
+import net.yoojia.dataprovider.util.SQLiteDBAccessor;
+import net.yoojia.dataprovider.util.UriUtility;
 import android.content.Context;
 import android.net.Uri;
 
@@ -18,27 +18,27 @@ public class CategoryProvider extends ActionInvoker {
 	/**
 	 * 数据表配置类
 	 */
-	public static class Table{
+	public static class TableConfig{
 		
-		@SQLiteTable
+		@Table
 		static final String TABLE = ACCESS_PREFIX;
 		
-		@SQLiteColumn(primitiveType=PrimitiveType.INT, isPrimaryKey=true, isAutoIncrese=true)
+		@Column(type=Type.INT, isPrimaryKey=true, isAutoIncrese=true)
 		static final String CLUMN_KEY = "_id";
 		
-		@SQLiteColumn(isNotNull=true)
+		@Column(isNotNull=true)
 		public static final String CLUMN_NAME = "name";
 		
-		@SQLiteColumn(primitiveType=PrimitiveType.INT,isNotNull=true)
+		@Column(type=Type.INT,isNotNull=true)
 		public static final String CLUMN_ID = "cate_id";
 		
-		@SQLiteColumn(isNotNull=true)
+		@Column(isNotNull=true)
 		public static final String CLUMN_ICON = "icon_url";
 		
-		@SQLiteColumn
-		public static final String CLUMN_EXTRA = "cate_extra";
+		@Column(type=Type.INT, defaultValue="0")
+		public static final String CLUMN_COUNT = "cate_count";
 		
-		@SQLiteColumn(primitiveType=PrimitiveType.INT, defaultValue="0")
+		@Column(type=Type.INT, defaultValue="0")
 		public static final String CLUMN_PARENT = "parent_id";
 	}
 	
@@ -55,12 +55,12 @@ public class CategoryProvider extends ActionInvoker {
 	
 	public CategoryProvider(Context context) {
 		super(context);
-		SQLiteHelper.registerTableConfig(Table.class);
+		SQLiteDBAccessor.registerTableConfig(TableConfig.class);
 	}
 	
 	@Override
 	protected String tableName() {
-		return Table.TABLE;
+		return TableConfig.TABLE;
 	}
 
 }

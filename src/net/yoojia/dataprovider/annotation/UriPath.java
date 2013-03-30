@@ -1,4 +1,4 @@
-package sg.ilovedeals.dataservice.annotation;
+package net.yoojia.dataprovider.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

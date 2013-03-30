@@ -1,8 +1,8 @@
-package sg.ilovedeals.dataservice.logic;
+package net.yoojia.dataprovider.logic;
 
-import sg.ilovedeals.dataservice.util.JSONAbilityEntity;
+import net.yoojia.dataprovider.util.JSONAbility;
 
-public class ProfileEntity extends JSONAbilityEntity{
+public class ProfileEntity extends JSONAbility{
 	
 	public static final String SecretLabel = "Secret";
 	public static final String MaleLabel = "Male";

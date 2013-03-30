@@ -1,4 +1,4 @@
-package sg.ilovedeals.dataservice;
+package net.yoojia.dataprovider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;

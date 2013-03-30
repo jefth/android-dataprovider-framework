@@ -1,4 +1,4 @@
-package sg.ilovedeals.dataservice.util;
+package net.yoojia.dataprovider.util;
 
 public class CursorUtility {
 

@@ -1,11 +1,12 @@
-package sg.ilovedeals.dataservice;
+package net.yoojia.dataprovider;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import sg.ilovedeals.dataservice.util.UriUtility;
+import net.yoojia.dataprovider.util.UriUtility;
+
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -2,8 +2,9 @@ package sg.ilovedeals.dataservice;
 
 import java.util.Random;
 
-import sg.ilovedeals.dataservice.logic.CategoryProvider;
-import sg.ilovedeals.dataservice.util.CursorUtility;
+import net.yoojia.dataprovider.logic.CategoryProvider;
+import net.yoojia.dataprovider.util.CursorUtility;
+
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -41,7 +42,7 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				String where = CategoryProvider.Table.CLUMN_ID+"=?";
+				String where = CategoryProvider.TableConfig.CLUMN_ID+"=?";
 				String[] args = CursorUtility.toArgs(new Random().nextInt(50));
 				int rows = resolver.delete(CategoryProvider.URI_ITEM, where, args);
 				if(rows > 0)
@@ -57,11 +58,11 @@ public class MainActivity extends Activity {
 				ContentValues[] values = new ContentValues[size];
 				for(int i=0;i<size;i++){
 					ContentValues value = new ContentValues();
-					value.put(CategoryProvider.Table.CLUMN_EXTRA, "extra");
-					value.put(CategoryProvider.Table.CLUMN_ICON, "icon");
-					value.put(CategoryProvider.Table.CLUMN_NAME, "name-"+key);
-					value.put(CategoryProvider.Table.CLUMN_PARENT, 0);
-					value.put(CategoryProvider.Table.CLUMN_ID, key);
+					value.put(CategoryProvider.TableConfig.CLUMN_COUNT, "extra");
+					value.put(CategoryProvider.TableConfig.CLUMN_ICON, "icon");
+					value.put(CategoryProvider.TableConfig.CLUMN_NAME, "name-"+key);
+					value.put(CategoryProvider.TableConfig.CLUMN_PARENT, 0);
+					value.put(CategoryProvider.TableConfig.CLUMN_ID, key);
 					key++;
 					values[i] = value;
 				}
@@ -74,7 +75,7 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				String where = CategoryProvider.Table.CLUMN_PARENT+"=?";
+				String where = CategoryProvider.TableConfig.CLUMN_PARENT+"=?";
 				String[] args = CursorUtility.toArgs(0);
 				int rows = resolver.delete(CategoryProvider.URI_GROUP, where, args);
 				if(rows > 0){
@@ -88,8 +89,8 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				ContentValues values = new ContentValues();
-				values.put(CategoryProvider.Table.CLUMN_NAME, "### NAME = "+new Random().nextInt(100000));
-				String where = CategoryProvider.Table.CLUMN_ID+"=?";
+				values.put(CategoryProvider.TableConfig.CLUMN_NAME, "### NAME = "+new Random().nextInt(100000));
+				String where = CategoryProvider.TableConfig.CLUMN_ID+"=?";
 				String[] args = CursorUtility.toArgs(new Random().nextInt(50));
 				int rows = resolver.update(CategoryProvider.URI_ITEM, values,where, args);
 				System.out.println(">>> 响应行数："+rows);
@@ -136,7 +137,7 @@ public class MainActivity extends Activity {
         @Override  
         public void bindView(View view, Context context, Cursor cursor) {  
             TextView noteTitle = (TextView) view;
-            String title = cursor.getString(cursor.getColumnIndex(CategoryProvider.Table.CLUMN_NAME));
+            String title = cursor.getString(cursor.getColumnIndex(CategoryProvider.TableConfig.CLUMN_NAME));
             noteTitle.setText(title);  
                           
           //super.bindView(view, context, cursor);   

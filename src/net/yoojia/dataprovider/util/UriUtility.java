@@ -1,21 +1,22 @@
-package sg.ilovedeals.dataservice.util;
+package net.yoojia.dataprovider.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import sg.ilovedeals.dataservice.ILDDataProvider;
-import sg.ilovedeals.dataservice.annotation.UriPath;
+import net.yoojia.dataprovider.ILDDataProvider;
+import net.yoojia.dataprovider.annotation.UriPath;
+
 import android.net.Uri;
 
-public class UriUtility {
+public final class UriUtility {
 
 	/**
 	 * 构建单项目访问Uri
 	 * @param pathPrefix
 	 * @return
 	 */
-	public final static Uri makeAccessItemUri(String pathPrefix){
+	public static Uri makeAccessItemUri(String pathPrefix){
 		return Uri.parse(makeUri(pathPrefix, false));
 	}
 	
@@ -24,7 +25,7 @@ public class UriUtility {
 	 * @param pathPrefix
 	 * @return
 	 */
-	public final static Uri makeAccessGroupUri(String pathPrefix){
+	public static Uri makeAccessGroupUri(String pathPrefix){
 		return Uri.parse(makeUri(pathPrefix, true));
 	}
 	

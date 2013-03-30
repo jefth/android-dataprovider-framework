@@ -1,12 +1,12 @@
-package sg.ilovedeals.dataservice.logic;
+package net.yoojia.dataprovider.logic;
 
-import sg.ilovedeals.dataservice.ActionInvoker;
-import sg.ilovedeals.dataservice.annotation.SQLiteTable;
-import sg.ilovedeals.dataservice.annotation.SQLiteTable.SQLiteColumn;
-import sg.ilovedeals.dataservice.annotation.SQLiteTable.SQLiteColumn.PrimitiveType;
-import sg.ilovedeals.dataservice.annotation.UriPath;
-import sg.ilovedeals.dataservice.util.SQLiteHelper;
-import sg.ilovedeals.dataservice.util.UriUtility;
+import net.yoojia.dataprovider.ActionInvoker;
+import net.yoojia.dataprovider.annotation.Table;
+import net.yoojia.dataprovider.annotation.UriPath;
+import net.yoojia.dataprovider.annotation.Table.Column;
+import net.yoojia.dataprovider.annotation.Table.Column.Type;
+import net.yoojia.dataprovider.util.SQLiteDBAccessor;
+import net.yoojia.dataprovider.util.UriUtility;
 import android.content.Context;
 import android.net.Uri;
 
@@ -18,39 +18,39 @@ public class ProfileProvider extends ActionInvoker {
 	/**
 	 * 数据表配置类
 	 */
-	public static class Table{
+	public static class TableConfig{
 		
-		@SQLiteTable
+		@Table
 		static final String TABLE = ACCESS_PREFIX;
 		
-		@SQLiteColumn(primitiveType=PrimitiveType.INT, isPrimaryKey=true, isAutoIncrese=true)
+		@Column(type=Type.INT, isPrimaryKey=true, isAutoIncrese=true)
 		static final String CLUMN_KEY = "_id";
 		
-		@SQLiteColumn(primitiveType=PrimitiveType.INT,isNotNull=true)
+		@Column(type=Type.INT,isNotNull=true)
 		public static final String CLUMN_ID = "user_id";
 		
-		@SQLiteColumn
+		@Column
 		public static final String CLUMN_FULL_NAME = "full_name";
 		
-		@SQLiteColumn
+		@Column
 		public static final String CLUMN_USER_NAME = "user_name";
 		
-		@SQLiteColumn(primitiveType=PrimitiveType.INT)
+		@Column(type=Type.INT)
 		public static final String CLUMN_GENDER = "gender";
 		
-		@SQLiteColumn(isNotNull=true)
+		@Column(isNotNull=true)
 		public static final String CLUMN_EMAIL = "email";
 		
-		@SQLiteColumn
+		@Column
 		public static final String CLUMN_PASSWORD = "password";
 		
-		@SQLiteColumn
+		@Column
 		public static final String CLUMN_AVATAR = "avatar";
 		
-		@SQLiteColumn
+		@Column
 		public static final String CLUMN_INTRO = "intro";
 		
-		@SQLiteColumn(primitiveType=PrimitiveType.INT)
+		@Column(type=Type.INT)
 		public static final String CLUMN_CREDITS = "credits";
 	}
 	
@@ -67,12 +67,12 @@ public class ProfileProvider extends ActionInvoker {
 	
 	public ProfileProvider(Context context) {
 		super(context);
-		SQLiteHelper.registerTableConfig(Table.class);
+		SQLiteDBAccessor.registerTableConfig(TableConfig.class);
 	}
 
 	@Override
 	protected String tableName() {
-		return Table.TABLE;
+		return TableConfig.TABLE;
 	}
 
 }

@@ -1,6 +1,6 @@
-package sg.ilovedeals.dataservice;
+package net.yoojia.dataprovider;
 
-import sg.ilovedeals.dataservice.util.SQLiteHelper;
+import net.yoojia.dataprovider.util.SQLiteDBAccessor;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,22 +10,30 @@ import android.net.Uri;
 public abstract class ActionInvoker {
 	
 	protected Context mContext;
-	protected SQLiteHelper sqliteHelper = null;
+	protected SQLiteDBAccessor sqliteHelper = null;
+	
+	private boolean sendNotifyFlag = true;
 	
 	public ActionInvoker(Context context){
 		this.mContext = context;
-		sqliteHelper = SQLiteHelper.getInstance(context);
+		sqliteHelper = SQLiteDBAccessor.getInstance(context);
 	}
 	
 	protected int delete(Uri uri, String selection, String[] selectionArgs){
 		SQLiteDatabase database = sqliteHelper.getWritableDatabase();
 		int deletingRows = database.delete(tableName(), selection, selectionArgs);
+		if(deletingRows > 0 && sendNotifyFlag){
+			mContext.getContentResolver().notifyChange(uri, null);
+		}
 		return deletingRows;
 	}
 
 	protected Uri insert(Uri uri, ContentValues values){
 		SQLiteDatabase database = sqliteHelper.getWritableDatabase();
-		database.insert(tableName(), null, values);
+		long newlyId = database.insert(tableName(), null, values);
+		if(newlyId != -1 && sendNotifyFlag){
+			mContext.getContentResolver().notifyChange(uri, null);
+		}
 		return uri;
 	}
 	
@@ -41,6 +49,9 @@ public abstract class ActionInvoker {
 		}finally{
 			database.endTransaction();
 		}
+		if(sendNotifyFlag){
+			mContext.getContentResolver().notifyChange(uri, null);
+		}
 		return values.length;
 	}
 
@@ -53,6 +64,9 @@ public abstract class ActionInvoker {
 	protected int update(Uri uri, ContentValues values, String where,String[] whereArgs){
 		SQLiteDatabase database = sqliteHelper.getReadableDatabase();
 		int updateRows = database.update(tableName(), values, where, whereArgs);
+		if(updateRows > 0 && sendNotifyFlag){
+			mContext.getContentResolver().notifyChange(uri, null);
+		}
 		return updateRows;
 	}
 	
@@ -61,5 +75,13 @@ public abstract class ActionInvoker {
 	 * @return
 	 */
 	protected abstract String tableName();
+	
+	/**
+	 * 设置是否对Resolver发送数据更新通知
+	 * @param flag
+	 */
+	public void setResolverNotify(boolean flag){
+		sendNotifyFlag = flag;
+	}
 	
 }

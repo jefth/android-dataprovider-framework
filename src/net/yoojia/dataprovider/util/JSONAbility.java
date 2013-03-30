@@ -1,8 +1,8 @@
-package sg.ilovedeals.dataservice.util;
+package net.yoojia.dataprovider.util;
 
 import java.lang.reflect.Field;
 
-public class JSONAbilityEntity {
+public class JSONAbility {
 	
 	@Override
 	public final String toString(){

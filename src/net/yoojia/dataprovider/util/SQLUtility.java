@@ -1,14 +1,15 @@
-package sg.ilovedeals.dataservice.util;
+package net.yoojia.dataprovider.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import sg.ilovedeals.dataservice.annotation.SQLiteTable;
-import sg.ilovedeals.dataservice.annotation.SQLiteTable.SQLiteColumn;
+import net.yoojia.dataprovider.annotation.Table;
+import net.yoojia.dataprovider.annotation.Table.Column;
 
-public class SQLUtility {
+
+public final class SQLUtility {
 
 	private static HashMap<Class<?>, String> createTableSQLStatement = new HashMap<Class<?>, String>();
 	private static HashMap<Class<?>, String> dropTableSQLStatement = new HashMap<Class<?>, String>();
@@ -25,14 +26,14 @@ public class SQLUtility {
 		try{
 			for(Field field : fields){
 				field.setAccessible(true);
-				boolean isTable = field.getAnnotation(SQLiteTable.class) != null;
+				boolean isTable = field.getAnnotation(Table.class) != null;
 				if(isTable){
 					String tableName = field.get(table).toString();
 					sqlBuffer.append(tableName).append("' ");
 					dropTableSQLStatement.put(table, "DROP TABLE IF EXISTS "+tableName+";");
 					tableNames.put(table, tableName);
 				}else{
-					SQLiteColumn columnAnnotation = field.getAnnotation(SQLiteColumn.class);
+					Column columnAnnotation = field.getAnnotation(Column.class);
 					if(columnAnnotation != null){
 						String name = field.get(table).toString();
 						boolean isKey = columnAnnotation.isPrimaryKey();
@@ -40,7 +41,7 @@ public class SQLUtility {
 						boolean isIncrese = columnAnnotation.isAutoIncrese();
 						String defaultValue = columnAnnotation.defaultValue();
 						String type = "TEXT";
-						switch(columnAnnotation.primitiveType()){
+						switch(columnAnnotation.type()){
 						case INT:
 							type = "INTEGER";
 							break;

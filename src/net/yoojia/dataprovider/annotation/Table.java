@@ -1,4 +1,4 @@
-package sg.ilovedeals.dataservice.annotation;
+package net.yoojia.dataprovider.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,16 +7,16 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
-public @interface SQLiteTable {
+public @interface Table {
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ ElementType.FIELD })
-	public @interface SQLiteColumn {
+	public @interface Column {
 		
 		/**
 		 * 列的基本类型 
 		 */
-		public enum PrimitiveType{INT,STRING}
+		public enum Type{INT,STRING}
 		
 		/**
 		 * 列是否为主键
@@ -46,6 +46,6 @@ public @interface SQLiteTable {
 		 * 设置列的基本类型。e.g:int | string
 		 * @return
 		 */
-		PrimitiveType primitiveType() default PrimitiveType.STRING;
+		Type type() default Type.STRING;
 	}
 }
