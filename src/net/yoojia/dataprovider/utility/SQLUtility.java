@@ -1,4 +1,4 @@
-package net.yoojia.dataprovider.util;
+package net.yoojia.dataprovider.utility;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -40,13 +40,7 @@ public final class SQLUtility {
 						boolean isNotNull = columnAnnotation.isNotNull();
 						boolean isIncrese = columnAnnotation.isAutoIncrese();
 						String defaultValue = columnAnnotation.defaultValue();
-						String type = "TEXT";
-						switch(columnAnnotation.type()){
-						case INT:
-							type = "INTEGER";
-							break;
-						default:
-						}
+						String type = columnAnnotation.type().name();
 						columnsList.add(name);
 						columnBuffer.append("'").append(name).append("' ");
 						columnBuffer.append(type);

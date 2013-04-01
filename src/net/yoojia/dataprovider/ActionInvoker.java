@@ -1,6 +1,6 @@
 package net.yoojia.dataprovider;
 
-import net.yoojia.dataprovider.util.SQLiteDBAccessor;
+import net.yoojia.dataprovider.utility.SQLiteDBAccessor;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

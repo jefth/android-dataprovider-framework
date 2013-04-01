@@ -5,8 +5,8 @@ import net.yoojia.dataprovider.annotation.Table;
 import net.yoojia.dataprovider.annotation.UriPath;
 import net.yoojia.dataprovider.annotation.Table.Column;
 import net.yoojia.dataprovider.annotation.Table.Column.Type;
-import net.yoojia.dataprovider.util.SQLiteDBAccessor;
-import net.yoojia.dataprovider.util.UriUtility;
+import net.yoojia.dataprovider.utility.SQLiteDBAccessor;
+import net.yoojia.dataprovider.utility.UriUtility;
 import android.content.Context;
 import android.net.Uri;
 
@@ -23,22 +23,22 @@ public class CategoryProvider extends ActionInvoker {
 		@Table
 		static final String TABLE = ACCESS_PREFIX;
 		
-		@Column(type=Type.INT, isPrimaryKey=true, isAutoIncrese=true)
+		@Column(type=Type.INTEGER, isPrimaryKey=true, isAutoIncrese=true)
 		static final String CLUMN_KEY = "_id";
 		
 		@Column(isNotNull=true)
 		public static final String CLUMN_NAME = "name";
 		
-		@Column(type=Type.INT,isNotNull=true)
+		@Column(type=Type.INTEGER,isNotNull=true)
 		public static final String CLUMN_ID = "cate_id";
 		
 		@Column(isNotNull=true)
 		public static final String CLUMN_ICON = "icon_url";
 		
-		@Column(type=Type.INT, defaultValue="0")
+		@Column(type=Type.INTEGER, defaultValue="0")
 		public static final String CLUMN_COUNT = "cate_count";
 		
-		@Column(type=Type.INT, defaultValue="0")
+		@Column(type=Type.INTEGER, defaultValue="0")
 		public static final String CLUMN_PARENT = "parent_id";
 	}
 	

@@ -1,4 +1,4 @@
-package net.yoojia.dataprovider.util;
+package net.yoojia.dataprovider.utility;
 
 public class CursorUtility {
 

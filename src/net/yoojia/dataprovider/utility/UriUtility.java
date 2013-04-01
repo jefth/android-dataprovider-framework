@@ -1,10 +1,10 @@
-package net.yoojia.dataprovider.util;
+package net.yoojia.dataprovider.utility;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.yoojia.dataprovider.ILDDataProvider;
+import net.yoojia.dataprovider.DataProvider;
 import net.yoojia.dataprovider.annotation.UriPath;
 
 import android.net.Uri;
@@ -31,7 +31,7 @@ public final class UriUtility {
 	
 	private static String makeUri(String pathPrefix,boolean isGroupAccess){
 		StringBuffer buffer = new StringBuffer("content://");
-		buffer.append(ILDDataProvider.AUTHORITY).append("/").append(pathPrefix);
+		buffer.append(DataProvider.AUTHORITY).append("/").append(pathPrefix);
 		buffer.append( isGroupAccess ? "" : "/#");
 		return buffer.toString();
 	}

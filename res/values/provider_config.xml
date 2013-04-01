@@ -2,6 +2,6 @@
 <resources>
     
     <!-- prefix as "ivk_config_" -->
-    <string name="ivk_config_category">sg.ilovedeals.dataservice.logic.CategoryInvoker</string>
+    <string name="ivk_config_category">net.yoojia.dataprovider.logic.CategoryProvider</string>
     
 </resources>

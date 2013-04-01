@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.yoojia.dataprovider.util.UriUtility;
+import net.yoojia.dataprovider.utility.UriUtility;
 
 
 import android.annotation.SuppressLint;
@@ -102,7 +102,7 @@ public class InvokerManager {
 	void register(ActionInvoker invoker){
 		String[] actionPathGroup = UriUtility.makeActionPathGroup(invoker.getClass(), invoker);
 		for(String actionPath : actionPathGroup ){
-			matcher.addURI(ILDDataProvider.AUTHORITY, actionPath, code);
+			matcher.addURI(DataProvider.AUTHORITY, actionPath, code);
 			refrences.put(code, new InvokerWrapper(invoker, actionPath, code));
 			code++;
 		}

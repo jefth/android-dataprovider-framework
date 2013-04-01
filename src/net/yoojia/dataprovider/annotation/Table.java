@@ -16,7 +16,7 @@ public @interface Table {
 		/**
 		 * 列的基本类型 
 		 */
-		public enum Type{INT,STRING}
+		public enum Type{INTEGER,TEXT,FLOAT}
 		
 		/**
 		 * 列是否为主键
@@ -46,6 +46,6 @@ public @interface Table {
 		 * 设置列的基本类型。e.g:int | string
 		 * @return
 		 */
-		Type type() default Type.STRING;
+		Type type() default Type.TEXT;
 	}
 }

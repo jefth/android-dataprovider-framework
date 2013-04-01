@@ -5,8 +5,8 @@ import net.yoojia.dataprovider.annotation.Table;
 import net.yoojia.dataprovider.annotation.UriPath;
 import net.yoojia.dataprovider.annotation.Table.Column;
 import net.yoojia.dataprovider.annotation.Table.Column.Type;
-import net.yoojia.dataprovider.util.SQLiteDBAccessor;
-import net.yoojia.dataprovider.util.UriUtility;
+import net.yoojia.dataprovider.utility.SQLiteDBAccessor;
+import net.yoojia.dataprovider.utility.UriUtility;
 import android.content.Context;
 import android.net.Uri;
 
@@ -23,10 +23,10 @@ public class ProfileProvider extends ActionInvoker {
 		@Table
 		static final String TABLE = ACCESS_PREFIX;
 		
-		@Column(type=Type.INT, isPrimaryKey=true, isAutoIncrese=true)
+		@Column(type=Type.INTEGER, isPrimaryKey=true, isAutoIncrese=true)
 		static final String CLUMN_KEY = "_id";
 		
-		@Column(type=Type.INT,isNotNull=true)
+		@Column(type=Type.INTEGER,isNotNull=true)
 		public static final String CLUMN_ID = "user_id";
 		
 		@Column
@@ -35,7 +35,7 @@ public class ProfileProvider extends ActionInvoker {
 		@Column
 		public static final String CLUMN_USER_NAME = "user_name";
 		
-		@Column(type=Type.INT)
+		@Column(type=Type.INTEGER)
 		public static final String CLUMN_GENDER = "gender";
 		
 		@Column(isNotNull=true)
@@ -50,7 +50,7 @@ public class ProfileProvider extends ActionInvoker {
 		@Column
 		public static final String CLUMN_INTRO = "intro";
 		
-		@Column(type=Type.INT)
+		@Column(type=Type.INTEGER)
 		public static final String CLUMN_CREDITS = "credits";
 	}
 	

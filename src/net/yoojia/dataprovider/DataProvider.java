@@ -5,9 +5,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
-public class ILDDataProvider extends ContentProvider {
+public class DataProvider extends ContentProvider {
 	
-	public static final String AUTHORITY = "sg.ilovedeals.dataprovider"; 
+	public static final String AUTHORITY = "net.yoojia.dataprovider"; 
 
 	private InvokerManager invokerManager;
 	

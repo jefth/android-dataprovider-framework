@@ -1,10 +1,9 @@
-package sg.ilovedeals.dataservice;
+package net.yoojia.dataprovider;
 
 import java.util.Random;
 
 import net.yoojia.dataprovider.logic.CategoryProvider;
-import net.yoojia.dataprovider.util.CursorUtility;
-
+import net.yoojia.dataprovider.utility.CursorUtility;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;

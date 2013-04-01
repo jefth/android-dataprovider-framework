@@ -1,6 +1,6 @@
 package net.yoojia.dataprovider.logic;
 
-import net.yoojia.dataprovider.util.JSONAbility;
+import net.yoojia.dataprovider.utility.JSONAbility;
 
 public class ProfileEntity extends JSONAbility{
 	
