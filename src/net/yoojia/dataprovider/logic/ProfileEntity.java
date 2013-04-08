@@ -1,8 +1,13 @@
 package net.yoojia.dataprovider.logic;
 
+import net.yoojia.dataprovider.annotation.Column;
+import net.yoojia.dataprovider.annotation.Table;
 import net.yoojia.dataprovider.utility.JSONAbility;
 
+@Table(name=ProfileEntity.TABLE_NAME)
 public class ProfileEntity extends JSONAbility{
+	
+	public static final String TABLE_NAME = "profiles";
 	
 	public static final String SecretLabel = "Secret";
 	public static final String MaleLabel = "Male";
@@ -14,102 +19,118 @@ public class ProfileEntity extends JSONAbility{
 	public static final int MALE = 1;
 	public static final int FEMALE = 2;
 
-	public final long uid;
-	public final String fullName;
-	public final String userName;
-	public final int gender;
-	public final String genderLabel;
-	public final String email;
-	public final String password;
-	public final String avatar;
-	public final String intro;
-	public final int credits;
+	@Column
+	private long uid;
 	
-	public static class Builder{
-		long uid;
-		String fullName;
-		String userName;
-		int gender;
-		String genderLabel;
-		String email;
-		String password;
-		String avatar;
-		String intro;
-		int credits;
+	@Column
+	private String fullName;
+	
+	@Column
+	private String userName;
+	
+	@Column
+	private int gender;
+	
+	@Column
+	private String genderLabel;
+	
+	@Column
+	private String email;
+	
+	@Column
+	private String password;
+	
+	@Column
+	private String avatar;
+	
+	@Column
+	private String intro;
+	
+	@Column
+	private int credits;
+	
+	//////////////
 
-		public ProfileEntity build(){
-			return new ProfileEntity(this);
-		}
-        
-		public Builder setUid(long uid) {
-			this.uid = uid;
-			return this;
-		}
+	public long getUid() {
+		return uid;
+	}
 
-		public Builder setFullName(String fullName) {
-			this.fullName = fullName;
-			return this;
-		}
+	public void setUid(long uid) {
+		this.uid = uid;
+	}
 
-		public Builder setUserName(String userName) {
-			this.userName = userName;
-			return this;
-		}
-		
-		public Builder setCredits(int credits) {
-			this.credits = credits;
-			return this;
-		}
+	public String getFullName() {
+		return fullName;
+	}
 
-		public Builder setGender(int gender) {
-			this.gender = gender;
-			switch(gender){
-			case FEMALE:
-				this.genderLabel = FemaleLabel;
-				break;
-			case MALE:
-				this.genderLabel = MaleLabel;
-				break;
-			default:
-				this.genderLabel = SecretLabel;
-				break;
-			}
-			return this;
-		}
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 
-		public Builder setEmail(String email) {
-			this.email = email;
-			return this;
-		}
+	public String getUserName() {
+		return userName;
+	}
 
-		public Builder setPassword(String password) {
-			this.password = password;
-			return this;
-		}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-		public Builder setAvatar(String avatar) {
-			this.avatar = avatar;
-			return this;
-		}
+	public int getGender() {
+		return gender;
+	}
 
-		public Builder setIntro(String intro) {
-			this.intro = intro;
-			return this;
-		}
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
 
+	public String getGenderLabel() {
+		return genderLabel;
+	}
+
+	public void setGenderLabel(String genderLabel) {
+		this.genderLabel = genderLabel;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+	public String getIntro() {
+		return intro;
+	}
+
+	public void setIntro(String intro) {
+		this.intro = intro;
+	}
+
+	public int getCredits() {
+		return credits;
+	}
+
+	public void setCredits(int credits) {
+		this.credits = credits;
 	}
 	
-	public ProfileEntity(Builder builder){
-		this.uid = builder.uid;
-		this.fullName = builder.fullName;
-		this.userName = builder.userName;
-		this.gender = builder.gender;
-		this.genderLabel = builder.genderLabel;
-		this.email = builder.email;
-		this.password = builder.password;
-		this.avatar = builder.avatar;
-		this.intro = builder.intro;
-		this.credits = builder.credits;
-	}
+	
 	
 }

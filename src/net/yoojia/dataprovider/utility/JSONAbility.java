@@ -15,6 +15,7 @@ public class JSONAbility {
 		StringBuffer buffer = new StringBuffer("{");
 		for(Field f : fields){
 			try {
+				f.setAccessible(true);
 				buffer.append(f.getName()).append(":");
 				Object value = f.get(this);
 				if(value != null) {

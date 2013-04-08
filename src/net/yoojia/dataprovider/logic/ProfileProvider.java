@@ -1,10 +1,7 @@
 package net.yoojia.dataprovider.logic;
 
 import net.yoojia.dataprovider.ActionInvoker;
-import net.yoojia.dataprovider.annotation.Table;
 import net.yoojia.dataprovider.annotation.UriPath;
-import net.yoojia.dataprovider.annotation.Table.Column;
-import net.yoojia.dataprovider.annotation.Table.Column.Type;
 import net.yoojia.dataprovider.utility.SQLiteDBAccessor;
 import net.yoojia.dataprovider.utility.UriUtility;
 import android.content.Context;
@@ -18,41 +15,41 @@ public class ProfileProvider extends ActionInvoker {
 	/**
 	 * 数据表配置类
 	 */
-	public static class TableConfig{
-		
-		@Table
-		static final String TABLE = ACCESS_PREFIX;
-		
-		@Column(type=Type.INTEGER, isPrimaryKey=true, isAutoIncrese=true)
-		static final String CLUMN_KEY = "_id";
-		
-		@Column(type=Type.INTEGER,isNotNull=true)
-		public static final String CLUMN_ID = "user_id";
-		
-		@Column
-		public static final String CLUMN_FULL_NAME = "full_name";
-		
-		@Column
-		public static final String CLUMN_USER_NAME = "user_name";
-		
-		@Column(type=Type.INTEGER)
-		public static final String CLUMN_GENDER = "gender";
-		
-		@Column(isNotNull=true)
-		public static final String CLUMN_EMAIL = "email";
-		
-		@Column
-		public static final String CLUMN_PASSWORD = "password";
-		
-		@Column
-		public static final String CLUMN_AVATAR = "avatar";
-		
-		@Column
-		public static final String CLUMN_INTRO = "intro";
-		
-		@Column(type=Type.INTEGER)
-		public static final String CLUMN_CREDITS = "credits";
-	}
+//	public static class TableConfig{
+//		
+//		@Table
+//		static final String TABLE = ACCESS_PREFIX;
+//		
+//		@Column(type=Type.INTEGER, isPrimaryKey=true, isAutoIncrese=true)
+//		static final String CLUMN_KEY = "_id";
+//		
+//		@Column(type=Type.INTEGER,isNotNull=true)
+//		public static final String CLUMN_ID = "user_id";
+//		
+//		@Column
+//		public static final String CLUMN_FULL_NAME = "full_name";
+//		
+//		@Column
+//		public static final String CLUMN_USER_NAME = "user_name";
+//		
+//		@Column(type=Type.INTEGER)
+//		public static final String CLUMN_GENDER = "gender";
+//		
+//		@Column(isNotNull=true)
+//		public static final String CLUMN_EMAIL = "email";
+//		
+//		@Column
+//		public static final String CLUMN_PASSWORD = "password";
+//		
+//		@Column
+//		public static final String CLUMN_AVATAR = "avatar";
+//		
+//		@Column
+//		public static final String CLUMN_INTRO = "intro";
+//		
+//		@Column(type=Type.INTEGER)
+//		public static final String CLUMN_CREDITS = "credits";
+//	}
 	
 	public static final Uri URI_RECOGNITION;
 	public static final Uri URI_GROUP;
@@ -67,12 +64,12 @@ public class ProfileProvider extends ActionInvoker {
 	
 	public ProfileProvider(Context context) {
 		super(context);
-		SQLiteDBAccessor.registerTableConfig(TableConfig.class);
+		SQLiteDBAccessor.registerTableConfig(ProfileEntity.class);
 	}
 
 	@Override
 	protected String tableName() {
-		return TableConfig.TABLE;
+		return ACCESS_PREFIX;
 	}
 
 }

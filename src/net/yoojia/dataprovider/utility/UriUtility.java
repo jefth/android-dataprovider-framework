@@ -31,7 +31,7 @@ public final class UriUtility {
 	
 	private static String makeUri(String pathPrefix,boolean isGroupAccess){
 		StringBuffer buffer = new StringBuffer("content://");
-		buffer.append(DataProvider.AUTHORITY).append("/").append(pathPrefix);
+		buffer.append(DataProvider.authority()).append("/").append(pathPrefix);
 		buffer.append( isGroupAccess ? "" : "/#");
 		return buffer.toString();
 	}

@@ -7,9 +7,17 @@ import android.net.Uri;
 
 public class DataProvider extends ContentProvider {
 	
-	public static final String AUTHORITY = "net.yoojia.dataprovider"; 
-
+	static String AUTHORITY = "net.yoojia.dataprovider"; 
+	
 	private InvokerManager invokerManager;
+
+	public static String authority(){
+		return AUTHORITY;
+	}
+	
+	public static void authority(String authority){
+		AUTHORITY = authority;
+	}
 	
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {

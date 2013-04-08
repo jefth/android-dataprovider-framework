@@ -1,9 +1,8 @@
 package net.yoojia.dataprovider;
 
-import java.util.Random;
-
+import net.yoojia.dataprovider.logic.CategoryEntity;
 import net.yoojia.dataprovider.logic.CategoryProvider;
-import net.yoojia.dataprovider.utility.CursorUtility;
+import net.yoojia.dataprovider.utility.EntityUtility;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -21,7 +20,9 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	private int key = 1;
-	final int size = 1000;
+	final int size = 10;
+	
+	EntityUtility<CategoryEntity> cu = new EntityUtility<CategoryEntity>(CategoryEntity.class);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +42,11 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				String where = CategoryProvider.TableConfig.CLUMN_ID+"=?";
-				String[] args = CursorUtility.toArgs(new Random().nextInt(50));
-				int rows = resolver.delete(CategoryProvider.URI_ITEM, where, args);
-				if(rows > 0)
-				resolver.notifyChange(CategoryProvider.URI_ITEM, null);
+//				String where = CategoryProvider.TableConfig.CLUMN_ID+"=?";
+//				String[] args = CursorUtility.toArgs(new Random().nextInt(50));
+//				int rows = resolver.delete(CategoryProvider.URI_ITEM, where, args);
+//				if(rows > 0)
+//				resolver.notifyChange(CategoryProvider.URI_ITEM, null);
 			}
 		});
 		
@@ -56,15 +57,15 @@ public class MainActivity extends Activity {
 				
 				ContentValues[] values = new ContentValues[size];
 				for(int i=0;i<size;i++){
-					ContentValues value = new ContentValues();
-					value.put(CategoryProvider.TableConfig.CLUMN_COUNT, "extra");
-					value.put(CategoryProvider.TableConfig.CLUMN_ICON, "icon");
-					value.put(CategoryProvider.TableConfig.CLUMN_NAME, "name-"+key);
-					value.put(CategoryProvider.TableConfig.CLUMN_PARENT, 0);
-					value.put(CategoryProvider.TableConfig.CLUMN_ID, key);
-					key++;
-					values[i] = value;
+					CategoryEntity cate = new CategoryEntity();
+					cate.setCateId(i);
+					cate.setCount(10);
+					cate.setIconUrl("icon icon icon icon icon ");
+					cate.setName("Category-"+i);
+					cate.setParentId(99);
+					values[i] = cu.entityToValues(cate);
 				}
+				
 				resolver.bulkInsert(CategoryProvider.URI_GROUP, values);
 				resolver.notifyChange(CategoryProvider.URI_GROUP, null);
 			}
@@ -74,12 +75,12 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				String where = CategoryProvider.TableConfig.CLUMN_PARENT+"=?";
-				String[] args = CursorUtility.toArgs(0);
-				int rows = resolver.delete(CategoryProvider.URI_GROUP, where, args);
-				if(rows > 0){
-					resolver.notifyChange(CategoryProvider.URI_GROUP, null);
-				}
+//				String where = CategoryProvider.TableConfig.CLUMN_PARENT+"=?";
+//				String[] args = CursorUtility.toArgs(0);
+//				int rows = resolver.delete(CategoryProvider.URI_GROUP, where, args);
+//				if(rows > 0){
+//					resolver.notifyChange(CategoryProvider.URI_GROUP, null);
+//				}
 			}
 		});
 		
@@ -87,14 +88,14 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				ContentValues values = new ContentValues();
-				values.put(CategoryProvider.TableConfig.CLUMN_NAME, "### NAME = "+new Random().nextInt(100000));
-				String where = CategoryProvider.TableConfig.CLUMN_ID+"=?";
-				String[] args = CursorUtility.toArgs(new Random().nextInt(50));
-				int rows = resolver.update(CategoryProvider.URI_ITEM, values,where, args);
-				System.out.println(">>> 响应行数："+rows);
-				if(rows > 0)
-				resolver.notifyChange(CategoryProvider.URI_ITEM, null);
+//				ContentValues values = new ContentValues();
+//				values.put(CategoryProvider.TableConfig.CLUMN_NAME, "### NAME = "+new Random().nextInt(100000));
+//				String where = CategoryProvider.TableConfig.CLUMN_ID+"=?";
+//				String[] args = CursorUtility.toArgs(new Random().nextInt(50));
+//				int rows = resolver.update(CategoryProvider.URI_ITEM, values,where, args);
+//				System.out.println(">>> 响应行数："+rows);
+//				if(rows > 0)
+//				resolver.notifyChange(CategoryProvider.URI_ITEM, null);
 			}
 		});
 		
@@ -126,7 +127,8 @@ public class MainActivity extends Activity {
         
         private Context mContext;  
           
-        public MyCursorAdapter(Context context, Cursor c) {  
+        @SuppressWarnings("deprecation")
+		public MyCursorAdapter(Context context, Cursor c) {  
             super(context, c);  
             mContext = context;  
         }  
@@ -136,10 +138,8 @@ public class MainActivity extends Activity {
         @Override  
         public void bindView(View view, Context context, Cursor cursor) {  
             TextView noteTitle = (TextView) view;
-            String title = cursor.getString(cursor.getColumnIndex(CategoryProvider.TableConfig.CLUMN_NAME));
-            noteTitle.setText(title);  
-                          
-          //super.bindView(view, context, cursor);   
+            CategoryEntity entity = cu.cursorToEntity(cursor);
+            noteTitle.setText(entity.toString());  
         }  
           
         @Override  

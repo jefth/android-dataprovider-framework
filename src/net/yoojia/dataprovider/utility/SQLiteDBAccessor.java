@@ -66,7 +66,7 @@ public final class SQLiteDBAccessor extends SQLiteOpenHelper {
 		db.beginTransaction();
 		try{
 			for(Class<?> table : TABLE_CONFIG_LIST){
-				SQLUtility.preProcessSQL(table);
+				SQLUtility.prepareSQL(table);
 				String sql = SQLUtility.makeCreateTableSQL(table);
 				Log.d(this.getClass().getSimpleName(), sql);
 				db.execSQL(sql);
@@ -80,7 +80,7 @@ public final class SQLiteDBAccessor extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		for(Class<?> table : TABLE_CONFIG_LIST){
-			SQLUtility.preProcessSQL(table);
+			SQLUtility.prepareSQL(table);
 			String sql = SQLUtility.makeDropTableSQL(table);
 			db.execSQL(sql);
 		}
