@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    
-    <!-- prefix as "ivk_config_" -->
-    <string name="ivk_config_category">net.yoojia.dataprovider.logic.CategoryProvider</string>
-    
-</resources>

@@ -2,18 +2,19 @@ package net.yoojia.dataprovider;
 
 import net.yoojia.dataprovider.logic.CategoryEntity;
 import net.yoojia.dataprovider.logic.CategoryProvider;
+import net.yoojia.dataprovider.utility.AsyncRequery;
+import net.yoojia.dataprovider.utility.AsyncRequery.RequeryInvoker;
 import net.yoojia.dataprovider.utility.EntityUtility;
+import net.yoojia.dataprovider.utility.SimpleObserver;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,12 +25,26 @@ public class MainActivity extends Activity {
 	
 	EntityUtility<CategoryEntity> cu = new EntityUtility<CategoryEntity>(CategoryEntity.class);
 	
+	ContentResolver resolver;
+	
+	RequeryInvoker requeryInvoker = new RequeryInvoker() {
+		
+		@Override
+		public Cursor doQueryInBackground() {
+			System.out.println("》》》》》查询。。。"+CategoryProvider.URI_GROUP);
+			return resolver.query(CategoryProvider.URI_GROUP, null, null, null, null);
+		}
+	};
+	
+	
+	MyCursorAdapter adapter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		final ContentResolver resolver = getContentResolver();
+		resolver = getContentResolver();
 		
 		View del = findViewById(R.id.delete);
 		View add = findViewById(R.id.add);
@@ -99,27 +114,18 @@ public class MainActivity extends Activity {
 			}
 		});
 		
-		resolver.registerContentObserver(CategoryProvider.URI_GROUP, true, new MyContentObserver(new Handler()));
-		listCursor = resolver.query(CategoryProvider.URI_GROUP, null, null, null, null);
-		MyCursorAdapter adapter = new MyCursorAdapter(this, listCursor);
+		adapter = new MyCursorAdapter(this, null);
 		listView.setAdapter(adapter);
 		listView.setFastScrollEnabled(true);
-	}
-	
-	private Cursor listCursor;
-	
-	class MyContentObserver extends ContentObserver{
-
-		public MyContentObserver(Handler handler) {
-			super(handler);
-		}
-
-		@Override
-		public void onChange(boolean selfChange) {
-			super.onChange(selfChange);
-			System.out.println(">>>> 数据发生改变。。");
-			listCursor.requery();
-		}
+		
+		resolver.registerContentObserver(CategoryProvider.URI_GROUP, true, new SimpleObserver(new SimpleObserver.OnChangeListener() {
+			@Override
+			public void onChange(boolean selfChange) {
+				System.out.println(">>>> 数据发生改变。。");
+				new AsyncRequery(adapter, requeryInvoker).execute();
+			}
+		}));
+		
 		
 	}
 	
@@ -127,13 +133,10 @@ public class MainActivity extends Activity {
         
         private Context mContext;  
           
-        @SuppressWarnings("deprecation")
 		public MyCursorAdapter(Context context, Cursor c) {  
             super(context, c);  
             mContext = context;  
         }  
-        
-        
           
         @Override  
         public void bindView(View view, Context context, Cursor cursor) {  
@@ -145,7 +148,15 @@ public class MainActivity extends Activity {
         @Override  
         public View newView(Context arg0, Cursor arg1, ViewGroup arg2) {  
              return new TextView(mContext);
-        }         
+        }
+
+		@Override
+		public void changeCursor(Cursor cursor) {
+			super.changeCursor(cursor);
+			System.out.println(">>>> 切换Cursor ： "+cursor.getCount());
+		} 
+        
+        
     }
 
 }

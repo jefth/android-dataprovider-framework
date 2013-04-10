@@ -3,12 +3,16 @@ package net.yoojia.dataprovider.utility;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.yoojia.dataprovider.ProviderLauncher;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public final class SQLiteDBAccessor extends SQLiteOpenHelper {
+	
+	static final String TAG = SQLiteDBAccessor.class.getSimpleName();
 	
 	static final String INSTANCED_ERROR = "Database is using! Please call the method BEFORE access database.";
 
@@ -68,7 +72,9 @@ public final class SQLiteDBAccessor extends SQLiteOpenHelper {
 			for(Class<?> table : TABLE_CONFIG_LIST){
 				SQLUtility.prepareSQL(table);
 				String sql = SQLUtility.makeCreateTableSQL(table);
-				Log.d(this.getClass().getSimpleName(), sql);
+				if(ProviderLauncher.isDebugMode()){
+					Log.d(TAG, String.format("### Executing SQL : %s",sql ));
+				}
 				db.execSQL(sql);
 			}
 			db.setTransactionSuccessful();

@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         
-        <provider android:name=".DataProvider"
+        <provider android:name="net.yoojia.dataprovider.ProviderLauncher"
+            android:exported="false"
             android:authorities="xxoo.com.com.dn">
         </provider>
         

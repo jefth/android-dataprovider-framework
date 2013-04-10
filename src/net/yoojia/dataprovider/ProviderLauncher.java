@@ -5,23 +5,49 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 
-public class DataProvider extends ContentProvider {
+public class ProviderLauncher extends ContentProvider {
 	
 	static String AUTHORITY = "net.yoojia.dataprovider"; 
 	
-	private InvokerManager invokerManager;
+	private ProviderManager invokerManager;
+	
+	static boolean IS_DEBUG = false;
+	
+	/**
+	 * 设置是否为调试模式
+	 * @param isDebug
+	 */
+	public static void setDebugMode(boolean isDebug){
+		IS_DEBUG = isDebug;
+	}
+	
+	/**
+	 * 返回是否处理调试模式
+	 * @return
+	 */
+	public static boolean isDebugMode(){
+		return IS_DEBUG;
+	}
 
+	/**
+	 * 获取识别码
+	 * @return
+	 */
 	public static String authority(){
 		return AUTHORITY;
 	}
 	
+	/**
+	 * 设置识别码
+	 * @param authority
+	 */
 	public static void authority(String authority){
 		AUTHORITY = authority;
 	}
 	
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		ActionInvoker invoker = invokerManager.matchInvoker(uri);
+		Provider invoker = invokerManager.matchInvoker(uri);
 		if(invoker != null){
 			return invokerManager.matchInvoker(uri).delete(uri, selection, selectionArgs);
 		}
@@ -30,7 +56,7 @@ public class DataProvider extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		ActionInvoker invoker = invokerManager.matchInvoker(uri);
+		Provider invoker = invokerManager.matchInvoker(uri);
 		if(invoker != null){
 			return invokerManager.matchInvoker(uri).insert(uri, values);
 		}
@@ -39,7 +65,7 @@ public class DataProvider extends ContentProvider {
 
 	@Override
 	public int bulkInsert(Uri uri, ContentValues[] values) {
-		ActionInvoker invoker = invokerManager.matchInvoker(uri);
+		Provider invoker = invokerManager.matchInvoker(uri);
 		if(invoker != null){
 			invokerManager.matchInvoker(uri).batchInsert(uri, values);
 			return values.length;
@@ -49,7 +75,7 @@ public class DataProvider extends ContentProvider {
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,String[] selectionArgs, String sortOrder) {
-		ActionInvoker invoker = invokerManager.matchInvoker(uri);
+		Provider invoker = invokerManager.matchInvoker(uri);
 		if(invoker != null){
 			return invokerManager.matchInvoker(uri).query(uri, projection, selection, selectionArgs, sortOrder);
 		}
@@ -58,7 +84,7 @@ public class DataProvider extends ContentProvider {
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,String[] selectionArgs) {
-		ActionInvoker invoker = invokerManager.matchInvoker(uri);
+		Provider invoker = invokerManager.matchInvoker(uri);
 		if(invoker != null){
 			return invokerManager.matchInvoker(uri).update(uri, values, selection, selectionArgs);
 		}
@@ -67,8 +93,7 @@ public class DataProvider extends ContentProvider {
 	
 	@Override
 	public boolean onCreate() {
-		this.invokerManager = new InvokerManager();
-		invokerManager.loadInvokers(getContext());
+		this.invokerManager = new ProviderManager(getContext());
 		return true;
 	}
 	
