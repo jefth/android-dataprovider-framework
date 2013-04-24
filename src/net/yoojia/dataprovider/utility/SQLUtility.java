@@ -47,7 +47,6 @@ public final class SQLUtility {
 					String sqlFieldName = convertToUnderline(fieldName);
 					javaColumnsList.add(fieldName);
 					sqlColumnsList.add(sqlFieldName);
-					boolean isKey = columnAnnotation.isPrimaryKey();
 					boolean isNotNull = columnAnnotation.isNotNull();
 					String defaultValue = columnAnnotation.defaultStringValue();
 					ReflectUtil.DataType dataType = ReflectUtil.getFieldType(field);
@@ -58,7 +57,7 @@ public final class SQLUtility {
 					case FLOAT:
 						defaultValue = String.valueOf(columnAnnotation.defaultFloatValue());
 						break;
-					case LONG:
+					case BOOL:
 						defaultValue = String.valueOf(columnAnnotation.defaultBoolValue());
 						break;
 					default:
@@ -67,7 +66,6 @@ public final class SQLUtility {
 					}
 					columnBuffer.append("'").append( sqlFieldName ).append("' ");
 					columnBuffer.append(dataType.name());
-					columnBuffer.append(isKey ? " PRIMARY KEY":"");
 					columnBuffer.append(isNotNull ? " NOT NULL":"");
 					if( !"".equals(defaultValue) ){
 						columnBuffer.append(" DEFAULT ").append(defaultValue);
@@ -88,19 +86,21 @@ public final class SQLUtility {
 	}
 	
 	/**
-	 * 将Java成员变量名转换成下划线形式
+	 * 驼峰式名称转换成下划线形式
 	 */
-	public static String convertToUnderline(String name){
-		StringBuffer buffer = new StringBuffer();
-        for(int i = 0; i < name.length(); i++) {
-            char ch = name.charAt(i);
-            if(Character.isUpperCase(ch)) {
-                buffer.append("_").append(Character.toLowerCase(ch));
+	public static String convertToUnderline(String words){
+		if(words == null || words.length()<2) return words;
+		StringBuffer wordBuffer = new StringBuffer();
+		for(int i = 0; i < words.length(); i++) {
+            char ch = words.charAt(i);
+            char preChar = i > 0 ? words.charAt(i-1) : '\u0000';
+            if( Character.isLowerCase(preChar) && Character.isUpperCase(ch)) {
+            	wordBuffer.append("_").append(Character.toLowerCase(ch));
             } else {
-                buffer.append(ch);
+            	wordBuffer.append(ch);
             }
         }
-        return buffer.toString();
+        return wordBuffer.toString();
 	}
 	
 	/**
