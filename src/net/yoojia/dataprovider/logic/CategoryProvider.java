@@ -19,7 +19,6 @@ public class CategoryProvider extends Provider {
 	public static final Uri URI_ITEM;
 	
 	static{
-		
 		URI_GROUP = UriUtility.makeAccessGroupUri(ACCESS_PREFIX);
 		URI_ITEM = UriUtility.makeAccessItemUri(ACCESS_PREFIX);
 		URI_RECOGNITION = URI_GROUP;
@@ -40,7 +39,7 @@ public class CategoryProvider extends Provider {
 		if(projection == null){
 			projection = SQLUtility.getSQLColumns(CategoryEntity.class);
 		}
-		return super.query(uri, projection, selection, selectionArgs, sortOrder);
+		return super.query(uri, projection, SQLUtility.convertToUnderline(selection), selectionArgs, sortOrder);
 	}
 
 }

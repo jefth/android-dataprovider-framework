@@ -13,10 +13,10 @@ public class CategoryEntity extends JSONAbility{
 	public static final String TABLE_NAME = "categories";
 	
 	@Column
-	private String name;
+	private int cateId;
 	
 	@Column
-	private int cateId;
+	private String name;
 	
 	@Column
 	private int parentId;
@@ -68,8 +68,5 @@ public class CategoryEntity extends JSONAbility{
 	public void setCount(int count) {
 		this.count = count;
 	}
-
-	
-	
 	
 }

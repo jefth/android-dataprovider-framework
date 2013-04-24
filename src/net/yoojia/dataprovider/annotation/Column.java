@@ -16,11 +16,12 @@ public @interface Column {
 	 * @return
 	 */
 	String name() default "";
-	/**
-	 * 列是否为主键
-	 * @return
-	 */
-	boolean isPrimaryKey() default false;
+	
+//	/**
+//	 * 列是否为主键
+//	 * @return
+//	 */
+//	boolean isPrimaryKey() default false;
 	
 	/**
 	 * 是否为非NULL

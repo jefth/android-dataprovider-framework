@@ -1,5 +1,7 @@
 package net.yoojia.dataprovider;
 
+import java.util.Random;
+
 import net.yoojia.dataprovider.logic.CategoryEntity;
 import net.yoojia.dataprovider.logic.CategoryProvider;
 import net.yoojia.dataprovider.utility.AsyncRequery;
@@ -20,7 +22,6 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	private int key = 1;
 	final int size = 10;
 	
 	EntityUtility<CategoryEntity> cu = new EntityUtility<CategoryEntity>(CategoryEntity.class);
@@ -31,7 +32,6 @@ public class MainActivity extends Activity {
 		
 		@Override
 		public Cursor doQueryInBackground() {
-			System.out.println("》》》》》查询。。。"+CategoryProvider.URI_GROUP);
 			return resolver.query(CategoryProvider.URI_GROUP, null, null, null, null);
 		}
 	};
@@ -57,11 +57,9 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-//				String where = CategoryProvider.TableConfig.CLUMN_ID+"=?";
-//				String[] args = CursorUtility.toArgs(new Random().nextInt(50));
-//				int rows = resolver.delete(CategoryProvider.URI_ITEM, where, args);
-//				if(rows > 0)
-//				resolver.notifyChange(CategoryProvider.URI_ITEM, null);
+				final int cateId = new Random().nextInt(10);
+				int rows = resolver.delete(CategoryProvider.URI_GROUP, "cateId=?", Provider.toArgs(cateId));
+				System.out.println("删除数据,影响行数:"+rows);
 			}
 		});
 		
@@ -73,16 +71,19 @@ public class MainActivity extends Activity {
 				ContentValues[] values = new ContentValues[size];
 				for(int i=0;i<size;i++){
 					CategoryEntity cate = new CategoryEntity();
-					cate.setCateId(i);
+					final int cateId = new Random().nextInt(size*10);
+					cate.setCateId(cateId);
 					cate.setCount(10);
 					cate.setIconUrl("icon icon icon icon icon ");
 					cate.setName("Category-"+i);
 					cate.setParentId(99);
-					values[i] = cu.entityToValues(cate);
+					ContentValues value = cu.entityToValues(cate);
+					values[i] = value;
+					QueryHelper.addWhere(value, "cate_id=?"/*或者 cateId=? , 如果是这种驼峰式式, 会被自动转换成下划线式. */, String.valueOf(i));
 				}
 				
-				resolver.bulkInsert(CategoryProvider.URI_GROUP, values);
-				resolver.notifyChange(CategoryProvider.URI_GROUP, null);
+				int rows = resolver.bulkInsert(CategoryProvider.URI_GROUP, values);
+				System.out.println("添加数据,影响行数:"+rows);
 			}
 		});
 		
@@ -90,12 +91,8 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-//				String where = CategoryProvider.TableConfig.CLUMN_PARENT+"=?";
-//				String[] args = CursorUtility.toArgs(0);
-//				int rows = resolver.delete(CategoryProvider.URI_GROUP, where, args);
-//				if(rows > 0){
-//					resolver.notifyChange(CategoryProvider.URI_GROUP, null);
-//				}
+				int rows = resolver.delete(CategoryProvider.URI_GROUP, "parentId=?", Provider.toArgs("99"));
+				System.out.println("清空数据,影响行数:"+rows);
 			}
 		});
 		
@@ -103,14 +100,16 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-//				ContentValues values = new ContentValues();
-//				values.put(CategoryProvider.TableConfig.CLUMN_NAME, "### NAME = "+new Random().nextInt(100000));
-//				String where = CategoryProvider.TableConfig.CLUMN_ID+"=?";
-//				String[] args = CursorUtility.toArgs(new Random().nextInt(50));
-//				int rows = resolver.update(CategoryProvider.URI_ITEM, values,where, args);
-//				System.out.println(">>> 响应行数："+rows);
-//				if(rows > 0)
-//				resolver.notifyChange(CategoryProvider.URI_ITEM, null);
+				CategoryEntity cate = new CategoryEntity();
+				final int cateId = new Random().nextInt(size*10);
+				cate.setCateId(cateId);
+				cate.setCount(10);
+				cate.setIconUrl("icon icon icon icon icon ");
+				cate.setName("Category-###"+cateId);
+				cate.setParentId(99);
+				ContentValues values = cu.entityToValues(cate);
+				int rows = resolver.update(CategoryProvider.URI_ITEM, values,"cateId=?", Provider.toArgs(cateId));
+				System.out.println(">>> 更新数据,影响行数："+rows);
 			}
 		});
 		
@@ -121,7 +120,7 @@ public class MainActivity extends Activity {
 		resolver.registerContentObserver(CategoryProvider.URI_GROUP, true, new SimpleObserver(new SimpleObserver.OnChangeListener() {
 			@Override
 			public void onChange(boolean selfChange) {
-				System.out.println(">>>> 数据发生改变。。");
+				System.out.println(">>>> 数据发生改变,正在更新...");
 				new AsyncRequery(adapter, requeryInvoker).execute();
 			}
 		}));
@@ -153,9 +152,7 @@ public class MainActivity extends Activity {
 		@Override
 		public void changeCursor(Cursor cursor) {
 			super.changeCursor(cursor);
-			System.out.println(">>>> 切换Cursor ： "+cursor.getCount());
 		} 
-        
         
     }
 
