@@ -5,8 +5,6 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-
-
 public class EntityUtility<T> {
 	
 	final Class<T> clazz;
@@ -41,8 +39,8 @@ public class EntityUtility<T> {
 				case FLOAT:
 					value = cursor.getFloat(index);
 					break;
-				case LONG:
-					value = cursor.getLong(index);
+				case BOOL:
+					value = (cursor.getLong(index) > 0);
 					break;
 				default:
 					value = cursor.getString(index);
@@ -79,9 +77,9 @@ public class EntityUtility<T> {
 					float floatVal = (Float) ReflectUtil.getFieldValue(data, fieldName);
 					values.put(columnArray[i], floatVal);
 					break;
-				case LONG:
-					int longVal = (Integer) ReflectUtil.getFieldValue(data, fieldName);
-					values.put(columnArray[i], longVal);
+				case BOOL:
+					boolean boolVal = (Boolean) ReflectUtil.getFieldValue(data, fieldName);
+					values.put(columnArray[i], boolVal);
 					break;
 				default:
 					String stringValue = String.valueOf(ReflectUtil.getFieldValue(data, fieldName));

@@ -6,7 +6,7 @@ import java.lang.reflect.Field;
 public class ReflectUtil {
 	
 	public enum DataType{
-		INTEGER,TEXT,FLOAT,LONG
+		INTEGER,TEXT,FLOAT,BOOL
 	}
 	
 	/**
@@ -24,7 +24,7 @@ public class ReflectUtil {
 		}else if("double".equalsIgnoreCase(genericTypeName)){
 			type = DataType.FLOAT;
 		}else if("boolean".equalsIgnoreCase(genericTypeName)){
-			type = DataType.LONG;
+			type = DataType.BOOL;
 		}
 		return type;
 	}
