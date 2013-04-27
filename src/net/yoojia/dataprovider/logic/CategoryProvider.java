@@ -2,14 +2,11 @@ package net.yoojia.dataprovider.logic;
 
 import net.yoojia.dataprovider.Provider;
 import net.yoojia.dataprovider.annotation.UriPath;
-import net.yoojia.dataprovider.utility.SQLUtility;
-import net.yoojia.dataprovider.utility.SQLiteDBAccessor;
 import net.yoojia.dataprovider.utility.UriUtility;
 import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 
-public class CategoryProvider extends Provider {
+public class CategoryProvider extends Provider<CategoryEntity> {
 	
 	@UriPath
 	static final String ACCESS_PREFIX = CategoryEntity.TABLE_NAME;
@@ -25,21 +22,12 @@ public class CategoryProvider extends Provider {
 	}
 	
 	public CategoryProvider(Context context) {
-		super(context);
-		SQLiteDBAccessor.registerTableConfig(CategoryEntity.class);
+		super(context, CategoryEntity.class);
 	}
 	
 	@Override
 	protected String tableName() {
 		return CategoryEntity.TABLE_NAME;
-	}
-
-	@Override
-	protected Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-		if(projection == null){
-			projection = SQLUtility.getSQLColumns(CategoryEntity.class);
-		}
-		return super.query(uri, projection, SQLUtility.convertToUnderline(selection), selectionArgs, sortOrder);
 	}
 
 }

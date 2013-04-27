@@ -47,7 +47,7 @@ public class ProviderLauncher extends ContentProvider {
 	
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		Provider invoker = invokerManager.matchInvoker(uri);
+		Provider<?> invoker = invokerManager.matchInvoker(uri);
 		if(invoker != null){
 			return invokerManager.matchInvoker(uri).delete(uri, selection, selectionArgs);
 		}
@@ -56,7 +56,7 @@ public class ProviderLauncher extends ContentProvider {
 
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
-		Provider invoker = invokerManager.matchInvoker(uri);
+		Provider<?> invoker = invokerManager.matchInvoker(uri);
 		if(invoker != null){
 			return invokerManager.matchInvoker(uri).insert(uri, values);
 		}
@@ -65,7 +65,7 @@ public class ProviderLauncher extends ContentProvider {
 
 	@Override
 	public int bulkInsert(Uri uri, ContentValues[] values) {
-		Provider invoker = invokerManager.matchInvoker(uri);
+		Provider<?> invoker = invokerManager.matchInvoker(uri);
 		if(invoker != null){
 			invokerManager.matchInvoker(uri).batchInsert(uri, values);
 			return values.length;
@@ -75,7 +75,7 @@ public class ProviderLauncher extends ContentProvider {
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,String[] selectionArgs, String sortOrder) {
-		Provider invoker = invokerManager.matchInvoker(uri);
+		Provider<?> invoker = invokerManager.matchInvoker(uri);
 		if(invoker != null){
 			return invokerManager.matchInvoker(uri).query(uri, projection, selection, selectionArgs, sortOrder);
 		}
@@ -84,7 +84,7 @@ public class ProviderLauncher extends ContentProvider {
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection,String[] selectionArgs) {
-		Provider invoker = invokerManager.matchInvoker(uri);
+		Provider<?> invoker = invokerManager.matchInvoker(uri);
 		if(invoker != null){
 			return invokerManager.matchInvoker(uri).update(uri, values, selection, selectionArgs);
 		}

@@ -9,18 +9,22 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-public abstract class Provider {
+public abstract class Provider<T> {
 	
 	static final String _ID = "_id";
+	
+	private Class<? extends T> entityClazz;
 	
 	protected Context mContext;
 	protected SQLiteDBAccessor sqliteHelper = null;
 	
 	private boolean sendNotifyChange = true;
 	
-	public Provider(Context context){
+	public Provider(Context context, Class<? extends T> entityClazz){
 		this.mContext = context;
+		this.entityClazz = entityClazz;
 		sqliteHelper = SQLiteDBAccessor.getInstance(context);
+		SQLiteDBAccessor.registerTableConfig(entityClazz);
 	}
 	
 	protected int delete(Uri uri, String selection, String[] selectionArgs){
@@ -91,6 +95,9 @@ public abstract class Provider {
 	}
 
 	protected Cursor query(Uri uri, String[] projection, String selection,String[] selectionArgs, String sortOrder){
+		if(projection == null){
+			projection = SQLUtility.getSQLColumns(entityClazz);
+		}
 		SQLiteDatabase database = sqliteHelper.getWritableDatabase();
 		if(projection != null){
 			projection = catArray(projection, _ID);

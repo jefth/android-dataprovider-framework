@@ -17,7 +17,7 @@ public class ProviderManager {
 	private final SparseArray<InvokerWrapper> refrences = new SparseArray<InvokerWrapper>();
 	private final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 	
-	private static final ArrayList<Class<? extends Provider>> registedClassList = new ArrayList<Class<? extends Provider>>();
+	private static final ArrayList<Class<? extends Provider<?>>> registedClassList = new ArrayList<Class<? extends Provider<?>>>();
 	
 	private static int registerCode = 1;
 	
@@ -26,9 +26,9 @@ public class ProviderManager {
 		final String path;
 		final int code;
 		final String type;
-		final Provider invoker;
+		final Provider<?> invoker;
 		
-		public InvokerWrapper(Provider invoker,String path,int code){
+		public InvokerWrapper(Provider<?> invoker,String path,int code){
 			this.path = path;
 			this.code = code;
 			this.invoker = invoker;
@@ -49,7 +49,7 @@ public class ProviderManager {
 	 *  **在使用Resolver之前注册**
 	 * @param provider
 	 */
-	public static void register(Class<? extends Provider> provider){
+	public static void register(Class<? extends Provider<?>> provider){
 		if(ProviderLauncher.isDebugMode()){
 			Log.d(TAG, String.format("### Registed Provider(%s).", provider.getName()));
 		}
@@ -57,7 +57,7 @@ public class ProviderManager {
 	}
 	
 	void init(){
-		for(Class<? extends Provider> clazz : registedClassList){
+		for(Class<? extends Provider<?>> clazz : registedClassList){
 			try {
 				registerByClass(clazz);
 				if(ProviderLauncher.isDebugMode()){
@@ -73,13 +73,13 @@ public class ProviderManager {
 	@SuppressWarnings("unchecked")
 	void registerByClass(Class<?> clazz) throws Exception{
 		if( Provider.class.isAssignableFrom(clazz)){
-            Constructor<? extends Provider> constructor = (Constructor<? extends Provider>) clazz.getConstructor(Context.class);
-            Provider invoker = constructor.newInstance(context);
+            Constructor<? extends Provider<?>> constructor = (Constructor<? extends Provider<?>>) clazz.getConstructor(Context.class);
+            Provider<?> invoker = constructor.newInstance(context);
 			register(invoker);
 		}
 	}
 	
-	void register(Provider invoker){
+	void register(Provider<?> invoker){
 		String[] actionPathGroup = UriUtility.makeActionPathGroup(invoker.getClass(), invoker);
 		for(String actionPath : actionPathGroup ){
 			matcher.addURI(ProviderLauncher.AUTHORITY, actionPath, registerCode);
@@ -89,7 +89,7 @@ public class ProviderManager {
 	}
 	
 	
-	Provider matchInvoker(Uri uri){
+	Provider<?> matchInvoker(Uri uri){
 		InvokerWrapper wrapper = refrences.get(matcher.match(uri));
 		if( wrapper != null ){
 			return wrapper.invoker;
