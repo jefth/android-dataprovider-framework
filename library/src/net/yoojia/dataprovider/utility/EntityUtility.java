@@ -13,6 +13,11 @@ public class EntityUtility<T> {
 		this(clazz, null);
     }
 
+	/**
+	 * 指定SQL生成过滤器
+	 * @param clazz 实体类对象
+	 * @param filter 字段过滤器
+	 */
 	public EntityUtility(Class<T> clazz,SQLUtility.SQLFilter filter) {
 		this.clazz = clazz;
 		SQLUtility.prepareSQL(clazz,filter);
@@ -20,8 +25,8 @@ public class EntityUtility<T> {
 	
 	/**
 	 * 将Cursor转换成数据实体
-	 * @param cursor
-	 * @return
+	 * @param cursor 数据库游标Cursor
+	 * @return 数据实体
 	 */
 	public T cursorToEntity(Cursor cursor){
 		T instance = null;
@@ -60,8 +65,8 @@ public class EntityUtility<T> {
 	
 	/**
 	 * 将数据实体对象转换成键值对
-	 * @param data
-	 * @return
+	 * @param data 数据实体
+	 * @return ContentValues键值对
 	 */
 	public ContentValues entityToValues(T data){
 		ContentValues values = new ContentValues();
@@ -105,8 +110,8 @@ public class EntityUtility<T> {
 	
 	/**
 	 * 将数据实体对象队列转换成键值对组
-	 * @param dataset
-	 * @return
+	 * @param dataset 数据集
+	 * @return 键值对组
 	 */
 	public ContentValues[] entityArrayToValues(List<T> dataset){
 		final int size = dataset.size();

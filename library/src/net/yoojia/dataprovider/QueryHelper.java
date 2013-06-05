@@ -24,35 +24,59 @@ public class QueryHelper {
 	static final String KEY_WHERE_ARGS_COUNT = "_query_helper_key_where_count";
 	static final String KEY_KEEP_ORIGIN = "_query_helper_keep_origin_";
 
-	public static void replaceString(ContentValues values, String oldField,String nameField){
-		if(values.containsKey(oldField)){
-			String value = values.getAsString(oldField);
-			values.remove(oldField);
-			values.put(nameField,value);
+	/**
+	 * 替换String类型的键值对Key名
+	 * @param values 键值对
+	 * @param oldKey 原Key
+	 * @param newKey 新Key
+	 */
+	public static void replaceString(ContentValues values, String oldKey,String newKey){
+		if(values.containsKey(oldKey)){
+			String value = values.getAsString(oldKey);
+			values.remove(oldKey);
+			values.put(newKey,value);
 		}
 	}
 
-	public static void replaceInt(ContentValues values, String oldField,String nameField){
-		replaceString(values, oldField, nameField);
+	/**
+	 * 替换Int类型的键值对Key名
+	 * @param values 键值对
+	 * @param oldKey 原Key
+	 * @param newKey 新Key
+	 */
+	public static void replaceInt(ContentValues values, String oldKey,String newKey){
+		replaceString(values, oldKey, newKey);
 	}
 
-	public static void replaceLong(ContentValues values, String oldField,String nameField){
-		replaceString(values, oldField, nameField);
+	/**
+	 * 替换Long类型的键值对Key名
+	 * @param values 键值对
+	 * @param oldKey 原Key
+	 * @param newKey 新Key
+	 */
+	public static void replaceLong(ContentValues values, String oldKey,String newKey){
+		replaceString(values, oldKey, newKey);
 	}
 
-	public static void replaceBool(ContentValues values, String oldField,String nameField){
-		if(values.containsKey(oldField)){
-			boolean value = values.getAsBoolean(oldField);
-			values.remove(oldField);
-			values.put(nameField,value);
+	/**
+	 * 替换Bool类型的键值对Key名
+	 * @param values 键值对
+	 * @param oldKey 原Key
+	 * @param newKey 新Key
+	 */
+	public static void replaceBool(ContentValues values, String oldKey,String newKey){
+		if(values.containsKey(oldKey)){
+			boolean value = values.getAsBoolean(oldKey);
+			values.remove(oldKey);
+			values.put(newKey,value);
 		}
 	}
 	
 	/**
 	 * 添加where条件
-	 * @param values
-	 * @param where
-	 * @param whereArgs
+	 * @param values 键值对
+	 * @param where 条件Key
+	 * @param whereArgs 条件值
 	 */
 	public static void addWhere(ContentValues values, String where,String... whereArgs){
 		values.put(KEY_WITH_WHERE, true);
@@ -66,7 +90,7 @@ public class QueryHelper {
 	
 	/**
 	 * 清除所有where条件参数. 在操作数据库前,ContentValues会自动清除,不必手动调用此方法.
-	 * @param values
+	 * @param values 键值对
 	 */
 	public static void removeWhere(ContentValues values){
 		values.remove(KEY_KEEP_ORIGIN);
@@ -84,7 +108,7 @@ public class QueryHelper {
 	
 	/**
 	 * 设置保持ContentValue源数据不变,拷贝此ContentValue保存到数据库中.
-	 * @param values
+	 * @param values 键值对
 	 */
 	public static void setKeepOrigin(ContentValues values){
 		values.put(KEY_KEEP_ORIGIN, true);

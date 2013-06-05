@@ -2,6 +2,9 @@ package net.yoojia.dataprovider.utility;
 
 import java.lang.reflect.Field;
 
+/**
+ * 生成JSON数据
+ */
 public class JSONAbility {
 
 	@Override

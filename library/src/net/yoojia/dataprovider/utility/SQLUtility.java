@@ -46,7 +46,8 @@ public final class SQLUtility {
 	/**
 	 * 预处理SQL数据。
 	 * 处理完成后的数据将被缓存。
-	 * @param entity
+	 * @param entity 数据实体类对象
+	 * @param filter 字段过滤器
 	 */
 	public static void prepareSQL(Class<?> entity,SQLFilter filter){
 		TableEntity tableEntityAnno = entity.getAnnotation(TableEntity.class);
