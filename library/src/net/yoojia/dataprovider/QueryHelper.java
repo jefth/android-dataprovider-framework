@@ -23,6 +23,30 @@ public class QueryHelper {
 	static final String KEY_WHERE = "_query_helper_key_where_";
 	static final String KEY_WHERE_ARGS_COUNT = "_query_helper_key_where_count";
 	static final String KEY_KEEP_ORIGIN = "_query_helper_keep_origin_";
+
+	public static void replaceString(ContentValues values, String oldField,String nameField){
+		if(values.containsKey(oldField)){
+			String value = values.getAsString(oldField);
+			values.remove(oldField);
+			values.put(nameField,value);
+		}
+	}
+
+	public static void replaceInt(ContentValues values, String oldField,String nameField){
+		replaceString(values, oldField, nameField);
+	}
+
+	public static void replaceLong(ContentValues values, String oldField,String nameField){
+		replaceString(values, oldField, nameField);
+	}
+
+	public static void replaceBool(ContentValues values, String oldField,String nameField){
+		if(values.containsKey(oldField)){
+			boolean value = values.getAsBoolean(oldField);
+			values.remove(oldField);
+			values.put(nameField,value);
+		}
+	}
 	
 	/**
 	 * 添加where条件

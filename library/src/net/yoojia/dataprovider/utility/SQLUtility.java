@@ -1,18 +1,23 @@
 package net.yoojia.dataprovider.utility;
 
+import net.yoojia.dataprovider.annotation.Column;
+import net.yoojia.dataprovider.annotation.NotColumn;
+import net.yoojia.dataprovider.annotation.TableEntity;
+import net.yoojia.dataprovider.annotation.TableName;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import net.yoojia.dataprovider.annotation.Column;
-import net.yoojia.dataprovider.annotation.NotColumn;
-import net.yoojia.dataprovider.annotation.TableEntity;
-import net.yoojia.dataprovider.annotation.TableName;
-
 
 public final class SQLUtility {
+
+	public interface SQLFilter{
+		String onColumnNameFilter(String columnName);
+		String onFieleNameFilter(String fieldName);
+	}
 
 	private static HashMap<Class<?>, String> createTableSQLStatement = new HashMap<Class<?>, String>();
 	private static HashMap<Class<?>, String> dropTableSQLStatement = new HashMap<Class<?>, String>();
@@ -34,16 +39,19 @@ public final class SQLUtility {
 		return fields.isEmpty() ? null : fields;
 	}
 
+	public static void prepareSQL(Class<?> entity){
+		prepareSQL(entity,null);
+	}
+
 	/**
 	 * 预处理SQL数据。
 	 * 处理完成后的数据将被缓存。
 	 * @param entity
 	 */
-	public static void prepareSQL(Class<?> entity){
+	public static void prepareSQL(Class<?> entity,SQLFilter filter){
 		TableEntity tableEntityAnno = entity.getAnnotation(TableEntity.class);
-		if(tableEntityAnno == null) {
-			throw new IllegalArgumentException("Given entity class is NOT a table-config entity.");
-		}
+		// 如果没有TableEntity字段，说明不需要创建SQL，只是缓存字段名
+		boolean createSQLFlag = tableEntityAnno != null;
 
 		List<String> javaColumnsList = new ArrayList<String>();
 		List<String> sqlColumnsList = new ArrayList<String>();
@@ -68,10 +76,20 @@ public final class SQLUtility {
 				if( notColumnAnno != null ) continue;
 
 				String fieldName = field.getName();
-				String sqlFieldName = convertToUnderline(fieldName);
+				if(filter != null){
+					fieldName = filter.onFieleNameFilter(fieldName);
+				}
 				javaColumnsList.add(fieldName);
-				sqlColumnsList.add(sqlFieldName);
-				columnBuffer.append("'").append( sqlFieldName ).append("' ");
+
+				String sqlColumnName = convertToUnderline(fieldName);
+				if(filter != null){
+					sqlColumnName = filter.onColumnNameFilter(sqlColumnName);
+				}
+				sqlColumnsList.add(sqlColumnName);
+
+				if( !createSQLFlag ) continue;
+
+				columnBuffer.append("'").append( sqlColumnName ).append("' ");
 				ReflectUtil.DataType dataType = ReflectUtil.getFieldType(field);
 				columnBuffer.append(dataType.name());
 
@@ -102,10 +120,12 @@ public final class SQLUtility {
 				columnBuffer.append(", ");
 			}
 
-			if(tableName == null) throw new IllegalArgumentException("No @TableName config in TableEntity !");
-
 			javaColumns.put(entity, javaColumnsList.toArray(new String[javaColumnsList.size()]));
 			sqlColumns.put(entity, sqlColumnsList.toArray(new String[sqlColumnsList.size()]));
+
+			// 只是创建字段名，则下面的代码就不需要执行了。
+			if( !createSQLFlag ) return;
+
 		}catch(Exception exp){
 			exp.printStackTrace();
 		}

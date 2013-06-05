@@ -1,18 +1,22 @@
 package net.yoojia.dataprovider.utility;
 
-import java.util.List;
-
 import android.content.ContentValues;
 import android.database.Cursor;
+
+import java.util.List;
 
 public class EntityUtility<T> {
 	
 	final Class<T> clazz;
     
 	public EntityUtility(Class<T> clazz) {
-         this.clazz = clazz;
-         SQLUtility.prepareSQL(clazz);
+		this(clazz, null);
     }
+
+	public EntityUtility(Class<T> clazz,SQLUtility.SQLFilter filter) {
+		this.clazz = clazz;
+		SQLUtility.prepareSQL(clazz,filter);
+	}
 	
 	/**
 	 * 将Cursor转换成数据实体
@@ -67,23 +71,29 @@ public class EntityUtility<T> {
 		for(int i=0;i<size;i++){
 			try {
 				String fieldName = fieldArray[i];
+				String columnName = columnArray[i];
+
 				ReflectUtil.DataType dataType = ReflectUtil.getFieldType(clazz, fieldName);
 				switch(dataType){
 				case INTEGER:
 					int intVal = (Integer) ReflectUtil.getFieldValue(data, fieldName);
-					values.put(columnArray[i], intVal);
+					if(intVal == 0) continue;
+					values.put(columnName, intVal);
 					break;
 				case FLOAT:
 					float floatVal = (Float) ReflectUtil.getFieldValue(data, fieldName);
-					values.put(columnArray[i], floatVal);
+					if(floatVal == 0) continue;
+					values.put(columnName, floatVal);
 					break;
 				case BOOL:
 					boolean boolVal = (Boolean) ReflectUtil.getFieldValue(data, fieldName);
-					values.put(columnArray[i], boolVal);
+					if(!boolVal) continue;
+					values.put(columnName, boolVal);
 					break;
 				default:
 					String stringValue = String.valueOf(ReflectUtil.getFieldValue(data, fieldName));
-					values.put(columnArray[i], stringValue);
+					if(stringValue == null) continue;
+					values.put(columnName, stringValue);
 					break;
 				}
 			} catch (Exception e) {
