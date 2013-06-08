@@ -7,19 +7,19 @@ import android.widget.CursorAdapter;
 /**
  * 异步查询数据库
  * @author 桥下一粒砂 (chenyoca@gmail.com)
- * @date   2013-4-7
+ * date   2013-4-7
  */
-public class AsyncRequery extends AsyncTask<Void, Void, Cursor> {
+public class AsynchronousQueryTask extends AsyncTask<Void, Void, Cursor> {
 	
-	public interface RequeryInvoker {
+	public interface QueryTaskDelegate {
 		Cursor doQueryInBackground();
 	}
 
 	private Cursor usingCursor;
 	private CursorAdapter adapter;
-	private RequeryInvoker invoker;
+	private QueryTaskDelegate invoker;
 
-	public AsyncRequery(CursorAdapter adapter,RequeryInvoker invoker) {
+	public AsynchronousQueryTask (CursorAdapter adapter, QueryTaskDelegate invoker) {
 		this.adapter = adapter;
 		this.invoker = invoker;
 		this.usingCursor = adapter.getCursor();
