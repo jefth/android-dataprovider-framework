@@ -1,7 +1,9 @@
-package net.yoojia.dataprovider.utility;
+package net.yoojia.dataprovider.support;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import net.yoojia.dataprovider.utility.ReflectUtil;
+import net.yoojia.dataprovider.utility.SQLUtility;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class EntityUtility<T> {
 	 */
 	public EntityUtility(Class<T> clazz,SQLUtility.SQLFilter filter) {
 		this.clazz = clazz;
-		SQLUtility.prepareSQL(clazz,filter);
+		SQLUtility.prepare(clazz, filter);
 	}
 	
 	/**

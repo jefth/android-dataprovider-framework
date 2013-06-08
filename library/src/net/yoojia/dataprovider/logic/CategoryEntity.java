@@ -2,7 +2,7 @@ package net.yoojia.dataprovider.logic;
 
 import net.yoojia.dataprovider.annotation.TableEntity;
 import net.yoojia.dataprovider.annotation.TableName;
-import net.yoojia.dataprovider.utility.JSONAbility;
+import net.yoojia.dataprovider.support.JSONAbility;
 
 /**
  * 数据实体封装类

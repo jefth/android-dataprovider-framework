@@ -40,7 +40,7 @@ public final class SQLUtility {
 	}
 
 	public static void prepareSQL(Class<?> entity){
-		prepareSQL(entity,null);
+		prepare(entity, null);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public final class SQLUtility {
 	 * @param entity 数据实体类对象
 	 * @param filter 字段过滤器
 	 */
-	public static void prepareSQL(Class<?> entity,SQLFilter filter){
+	public static void prepare (Class<?> entity, SQLFilter filter){
 		TableEntity tableEntityAnno = entity.getAnnotation(TableEntity.class);
 		// 如果没有TableEntity字段，说明不需要创建SQL，只是缓存字段名
 		boolean createSQLFlag = tableEntityAnno != null;

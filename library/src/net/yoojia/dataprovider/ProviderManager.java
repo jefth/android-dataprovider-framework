@@ -47,7 +47,7 @@ public class ProviderManager {
 	/**
 	 * 注册Provider的实现。
 	 *  **在使用Resolver之前注册**
-	 * @param provider
+	 * @param provider Provider的实现
 	 */
 	public static void register(Class<? extends Provider<?>> provider){
 		if(ProviderLauncher.isDebugMode()){
@@ -61,10 +61,10 @@ public class ProviderManager {
 			try {
 				registerByClass(clazz);
 				if(ProviderLauncher.isDebugMode()){
-					Log.d(TAG, String.format("### Initilized Provider(%s).", clazz.getName()));
+					Log.d(TAG, String.format(":::::: Initialized Provider(%s) ::::::", clazz.getName()));
 				}
 			} catch (Exception e) {
-				Log.e(TAG, "Cannot initialize Provider("+clazz.getSimpleName()+") !");
+				Log.e(TAG, ":::::: Cannot initialize Provider("+clazz.getSimpleName()+") ::::::");
 				e.printStackTrace();
 			}
 		}
