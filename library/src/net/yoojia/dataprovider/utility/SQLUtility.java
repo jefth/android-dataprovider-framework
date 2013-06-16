@@ -1,7 +1,7 @@
 package net.yoojia.dataprovider.utility;
 
 import net.yoojia.dataprovider.annotation.Column;
-import net.yoojia.dataprovider.annotation.NotColumn;
+import net.yoojia.dataprovider.annotation.IgnoreField;
 import net.yoojia.dataprovider.annotation.TableEntity;
 import net.yoojia.dataprovider.annotation.TableName;
 
@@ -73,8 +73,8 @@ public final class SQLUtility {
 				}
 
 				// 跳过NotColumn字段
-				NotColumn notColumnAnno = field.getAnnotation(NotColumn.class);
-				if( notColumnAnno != null ) continue;
+				IgnoreField ignoreFieldAnno = field.getAnnotation(IgnoreField.class);
+				if( ignoreFieldAnno != null ) continue;
 
 				String fieldName = field.getName();
 				if(filter != null){
